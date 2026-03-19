@@ -5,8 +5,8 @@ pipeline {
         DOCKERHUB_USERNAME = "2023bcd0031nishitha"
         ROLL = "2023BCD0031"
 
-        FRONTEND_IMAGE = "${DOCKERHUB_USERNAME}/${REGISTER}_${ROLL}_frontend"
-        BACKEND_IMAGE  = "${DOCKERHUB_USERNAME}/${REGISTER}_${ROLL}_backend"
+        FRONTEND_IMAGE = "${DOCKERHUB_USERNAME}/${ROLL}_${ROLL}_frontend"
+        BACKEND_IMAGE  = "${DOCKERHUB_USERNAME}/${ROLL}_${ROLL}_backend"
     }
 
     stages {
@@ -18,7 +18,7 @@ pipeline {
             }
         }
 
-        // Build Images (no tagging here)
+        // Build Images
         stage('Build Images') {
             steps {
                 sh 'docker build -t frontend ./frontend'
@@ -26,7 +26,7 @@ pipeline {
             }
         }
 
-        // Tag Images (SEPARATE STAGE )
+        // Tag Images
         stage('Tag Images') {
             steps {
                 sh 'docker tag backend $BACKEND_IMAGE'
