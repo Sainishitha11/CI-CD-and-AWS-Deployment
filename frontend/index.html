@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .data {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .loading {
+            color: #888;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card">
+        <h1>Student Details</h1>
+        <p id="output" class="loading">Loading...</p>
+    </div>
+
+    <script>
+        fetch("http://localhost:5000/student-details")
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("output").className = "data";
+            document.getElementById("output").innerHTML =
+                "<b>Name:</b> " + data.name + "<br>" +
+                "<b>Roll:</b> " + data.roll + "<br>";
+        })
+        .catch(err => {
+            document.getElementById("output").className = "error";
+            document.getElementById("output").innerText = "⚠ Error connecting to backend";
+        });
+    </script>
+
+</body>
+</html>
