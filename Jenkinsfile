@@ -14,7 +14,7 @@ pipeline {
         // Checkout Code
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/Sainishitha/FullStackApplication.git'
+                git credentialsId: 'github-creds', url: 'https://github.com/Sainishitha/FullStackApplication.git'
             }
         }
 
