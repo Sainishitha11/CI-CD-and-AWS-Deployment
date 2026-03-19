@@ -19,14 +19,14 @@ environment {
         stage('Build Backend Image') {
     steps {
         sh """
-        docker build -t ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_backend:latest ./backend
+        docker build -t ${DOCKERHUB_USERNAME}/${ROLL_NUMBER}_backend:latest ./backend
         """
     }
 }
         stage('Build Frontend Image') {
     steps {
         sh """
-        docker build -t ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_frontend:latest ./frontend
+        docker build -t ${DOCKERHUB_USERNAME}/${ROLL_NUMBER}_frontend:latest ./frontend
         """
     }
 }
@@ -45,13 +45,13 @@ environment {
 
         stage('Push Backend Image') {
             steps {
-                sh "docker push ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_backend"
+                sh "docker push ${DOCKERHUB_USERNAME}/${ROLL_NUMBER}_backend"
             }
         }
 
         stage('Push Frontend Image') {
             steps {
-                sh "docker push ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_frontend"
+                sh "docker push ${DOCKERHUB_USERNAME}/${ROLL_NUMBER}_frontend"
             }
         }
     }
