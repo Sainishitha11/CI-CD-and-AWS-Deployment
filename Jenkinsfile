@@ -14,7 +14,7 @@ pipeline {
         // Checkout Code
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/yourusername/your-repo.git'
+                git branch: 'main', url: 'https://github.com/Sainishitha/FullStackApplication.git'
             }
         }
 
