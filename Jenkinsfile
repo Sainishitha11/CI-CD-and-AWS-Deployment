@@ -3,7 +3,7 @@ pipeline {
 environment {
     DOCKERHUB_CREDENTIALS = 'dockerhub'
     DOCKERHUB_USERNAME = '2023bcd0031nishitha'                
-    ROLL_NUMBER = '2023BCD0031'                         
+    ROLL_NUMBER = '2023bcd0031'                         
 }
 
     stages {
