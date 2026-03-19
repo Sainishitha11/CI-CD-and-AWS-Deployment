@@ -1,53 +1,57 @@
 pipeline {
     agent any
-
-    environment {
-        DOCKERHUB_USERNAME = "2023bcd0031nishitha"
-        ROLL = "2023BCD0031"
-
-        FRONTEND_IMAGE = "${DOCKERHUB_USERNAME}/${ROLL}_${ROLL}_frontend"
-        BACKEND_IMAGE  = "${DOCKERHUB_USERNAME}/${ROLL}_${ROLL}_backend"
-    }
+environment {
+    DOCKERHUB_CREDENTIALS = 'dockerhub'
+    DOCKERHUB_USERNAME = '2023bcd0031nishitha'                
+    ROLL_NUMBER = '2023BCD0031'                         
+}
 
     stages {
 
-        // Checkout Code
-        stage('Checkout') {
-            steps {
-                git credentialsId: 'github-creds', url: 'https://github.com/Sainishitha/FullStackApplication.git'
-            }
-        }
+        stage('Checkout Code') {
+    steps {
+        git branch: 'main',
+            credentialsId: 'github-creds',
+            url: 'https://github.com/Sainishitha11/CI-CD-and-AWS-Deployment'
+    }
+}
 
-        // Build Images
-        stage('Build Images') {
-            steps {
-                sh 'docker build -t frontend ./frontend'
-                sh 'docker build -t backend ./backend'
-            }
-        }
+        stage('Build Backend Image') {
+    steps {
+        sh """
+        docker build -t ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_backend:latest ./backend
+        """
+    }
+}
+        stage('Build Frontend Image') {
+    steps {
+        sh """
+        docker build -t ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_frontend:latest ./frontend
+        """
+    }
+}
 
-        // Tag Images
-        stage('Tag Images') {
+        stage('Login to Docker Hub') {
             steps {
-                sh 'docker tag backend $BACKEND_IMAGE'
-                sh 'docker tag frontend $FRONTEND_IMAGE'
-            }
-        }
-
-        // Docker Login
-        stage('Docker Login') {
-            steps {
-                withCredentials([string(credentialsId: 'docker-pass', variable: 'PASS')]) {
-                    sh 'echo $PASS | docker login -u $DOCKERHUB_USERNAME --password-stdin'
+                withCredentials([usernamePassword(
+                    credentialsId: DOCKERHUB_CREDENTIALS,
+                    usernameVariable: 'USERNAME',
+                    passwordVariable: 'PASSWORD'
+                )]) {
+                    sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
                 }
             }
         }
 
-        // Push Images
-        stage('Push Images') {
+        stage('Push Backend Image') {
             steps {
-                sh 'docker push $BACKEND_IMAGE'
-                sh 'docker push $FRONTEND_IMAGE'
+                sh "docker push ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_backend"
+            }
+        }
+
+        stage('Push Frontend Image') {
+            steps {
+                sh "docker push ${DOCKERHUB_USERNAME}/${REGISTER_NUMBER}_${ROLL_NUMBER}_frontend"
             }
         }
     }
